@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import SocialShare from "./SocialShare";
 import Image from "next/image";
 import { Player } from "@/redux/leaderboardSlice";

@@ -1,20 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export interface Player {
-    id: number,
-    nama: string,
-    skor: number,
-    url_foto: string,
+export interface User {
+    id: string
+    nama: string
+    skor: number
+    url_foto: string
 }
 
 interface leaderboardState {
-    players: Player[],
+    users: User[],
     filter: string,
     sort: 'asc' | 'desc',
 }
 
 const initialState: leaderboardState = {
-    players: [],
+    users: [],
     filter: '',
     sort: 'desc'
 }
@@ -23,8 +23,8 @@ const leaderboardSlice = createSlice({
     name: 'leaderboard',
     initialState,
     reducers: {
-        setPlayers(state, action: PayloadAction<Player[]>) {
-            state.players = action.payload
+        setUsers(state, action: PayloadAction<User[]>) {
+            state.users = action.payload;
         },
         setFilter(state, action: PayloadAction<string>) {
             state.filter = action.payload
@@ -32,14 +32,14 @@ const leaderboardSlice = createSlice({
         setSort(state, action: PayloadAction<'asc' | 'desc'>) {
             state.sort = action.payload
         },
-        updatePlayers(state, action: PayloadAction<Player>) {
-            const index = state.players.findIndex((p) => p.id === action.payload.id)
+        updateUser(state, action: PayloadAction<User>) {
+            const index = state.users.findIndex((user) => user.id === action.payload.id);
             if (index !== -1) {
-                state.players[index] = action.payload
+                state.users[index] = action.payload;
             }
-        }
+        },
     }
 })
 
-export const { setPlayers, setFilter, setSort, updatePlayers } = leaderboardSlice.actions
+export const { setUsers, setFilter, setSort, updateUser } = leaderboardSlice.actions
 export default leaderboardSlice.reducer

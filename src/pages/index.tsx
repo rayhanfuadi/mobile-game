@@ -1,6 +1,6 @@
 import Leaderboard from "@/components/layouts/Leaderboars"
 import Navbar from "@/components/layouts/Navbar"
-import { store } from "@/redux/store"
+import store from "@/redux/store"
 import { Provider } from "react-redux"
 
 const Home = () => {

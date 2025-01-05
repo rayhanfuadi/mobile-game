@@ -17,18 +17,24 @@ const EditPlayerForm: React.FC<Props> = ({ player, onClose }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
-        const updatedPlayer = { ...player, nama, skor, foto }
+        // Data yang akan diperbarui
+        const updatedPlayer = {
+            nama,
+            skor,
+            url_foto: foto,
+        };
+
         try {
             //update api
-            await axios.put(`https://677118a42ffbd37a63ce2fcc.mockapi.io/users/${player.id}`, { updatedPlayer })
+            const response = await axios.put(`https://677118a42ffbd37a63ce2fcc.mockapi.io/users/${player.id}`, { updatedPlayer })
 
             // update redux state
-            dispatch(updatePlayers(updatedPlayer))
+            dispatch(updatePlayers(response.data))
 
-            console.dir(`Update Player: ${updatedPlayer} ✅`);
+            console.log(`Update Player: ${response.data} ✅`);
             onClose()
         } catch (error) {
-            console.error(`Update Player: ${error} ❌`);
+            console.error(`Failed to update player: ${error} ❌`);
         }
     }
 
