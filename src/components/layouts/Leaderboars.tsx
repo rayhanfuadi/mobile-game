@@ -29,6 +29,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Copy } from 'lucide-react';
+import InstagramShareButton from '../elements/InstagramShareButton';
 
 
 const Leaderboard: React.FC = () => {
@@ -80,13 +81,13 @@ const Leaderboard: React.FC = () => {
         <div className="grid gap-6">
             <h1 className="text-2xl font-semibold text-center mt-[68px]">Leaderboards</h1>
 
-            <div className="flex justify-between border p-2 rounded-full">
-                <div className="flex items-center gap-2">
+            <div className="flex justify-between border gap-2 p-2 rounded-full">
+                <div className="flex items-center w-full gap-2">
                     <Image className='ml-2' src="/icons/search.svg" alt="Logo" width={24} height={24} />
                     <input
                         type="text"
                         placeholder="Cari berdasarkan nama?"
-                        className="text-[#888] bg-transparent focus:outline-none"
+                        className="text-[#888] bg-transparent w-full focus:outline-none"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                     />
@@ -95,7 +96,7 @@ const Leaderboard: React.FC = () => {
                     <Image src="/icons/filter.svg" alt="Logo" width={18} height={18} />
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button className="text-black" variant="outline">Filter</Button>
+                            <p className='text-black mr-3'>Filter</p>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-48 mr-[16px]">
                             <DropdownMenuRadioGroup
@@ -105,10 +106,10 @@ const Leaderboard: React.FC = () => {
                                 }}
                             >
                                 <DropdownMenuRadioItem value="desc">
-                                    Skor Tertinggi (0-100)
+                                    Skor Tertinggi (100-0)
                                 </DropdownMenuRadioItem>
                                 <DropdownMenuRadioItem value="asc">
-                                    Skor Terendah (100-0)
+                                    Skor Terendah (0-100)
                                 </DropdownMenuRadioItem>
                             </DropdownMenuRadioGroup>
                         </DropdownMenuContent>
@@ -119,83 +120,90 @@ const Leaderboard: React.FC = () => {
             {/* Players Info */}
             <div className="grid gap-4">
                 {filteredUsers.map((user) => (
-                    <div key={user.id} className="flex items-center justify-between p-3 border-b">
-                        <div className="flex items-center gap-3">
+                    <div key={user.id} className="grid grid-cols-12 items-center p-3 border-b">
+                        <div className="col-span-2 flex items-center gap-3">
                             <div className="flex justify-center items-center w-[44px] h-[44px] bg-white rounded-full">
                                 <Image className='rounded-full w-[44px] h-[44px] object-cover' src={user.url_foto} alt="Logo" width={60} height={60} />
                             </div>
+                        </div>
+
+                        <div className="col-span-7 mr-2">
                             <div className="grid gap-1">
                                 <h3 className='font-semibold'>{user.nama}</h3>
                                 <p className='text-[14px] text-[#ccc]'>Skor: <b>{user.skor}</b></p>
                             </div>
                         </div>
-                        <div className="flex gap-2">
-                            <Dialog>
-                                <DialogTrigger asChild>
-                                    <div className="flex justify-center items-center bg-[#606060] hover:bg-[#404040] rounded-lg p-2">
-                                        <Image src="/icons/share.svg" alt="Logo" width={24} height={24} />
-                                    </div>
-                                </DialogTrigger>
-                                <DialogContent className="sm:max-w-md">
-                                    <DialogHeader>
-                                        <DialogTitle>Share link ({user.nama})</DialogTitle>
-                                        <DialogDescription>
-                                            Anyone who has this link will be able to view this.
-                                        </DialogDescription>
-                                    </DialogHeader>
-                                    <div className="flex items-center space-x-2">
-                                        <div className="grid flex-1 gap-2">
-                                            <Label htmlFor="link" className="sr-only">
-                                                Link
-                                            </Label>
-                                            <div className="flex gap-2">
-                                                <WhatsappShareButton
-                                                    url="https://example.com"
-                                                    title={`Hey! ${user.nama} just scored ${user.skor} on the leaderboard!`}
-                                                >
-                                                    <WhatsappIcon size={32} round />
-                                                </WhatsappShareButton>
-                                                <TelegramShareButton
-                                                    url="https://example.com"
-                                                    title={`Hey! ${user.nama} just scored ${user.skor} on the leaderboard!`}
-                                                >
-                                                    <TelegramIcon size={32} round />
-                                                </TelegramShareButton>
-                                                <FacebookShareButton
-                                                    url="https://example.com"
-                                                    hashtag={`Hey! ${user.nama} just scored ${user.skor} on the leaderboard!`}
-                                                >
-                                                    <FacebookIcon size={32} round />
-                                                </FacebookShareButton>
-                                            </div>
-                                            <Input
-                                                id="link"
-                                                defaultValue="https://ui.shadcn.com/docs/installation"
-                                                readOnly
-                                            />
+
+                        <div className="col-span-3">
+                            <div className="flex gap-2">
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <div className="flex justify-center items-center bg-[#606060] hover:bg-[#404040] rounded-lg p-2">
+                                            <Image src="/icons/share.svg" alt="Logo" width={24} height={24} />
                                         </div>
-                                        <Button type="submit" size="sm" className="px-3">
-                                            <span className="sr-only">Copy</span>
-                                            <Copy />
-                                        </Button>
-                                    </div>
-                                    <DialogFooter className="sm:justify-start">
-                                        <DialogClose asChild>
-                                            <Button type="button" variant="secondary">
-                                                Close
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-md">
+                                        <DialogHeader>
+                                            <DialogTitle>Share link</DialogTitle>
+                                            <DialogDescription>
+                                                Siapa saja bisa memiliki link ini.
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <div className="flex items-center space-x-2">
+                                            <div className="grid flex-1 gap-2">
+                                                <Label htmlFor="link" className="sr-only">
+                                                    Link
+                                                </Label>
+                                                <Input
+                                                    id="link"
+                                                    defaultValue="https://leaderboard-mobile.vercel.app/"
+                                                    readOnly
+                                                />
+                                            </div>
+                                            <Button type="submit" size="sm" className="px-3">
+                                                <span className="sr-only">Copy</span>
+                                                <Copy />
                                             </Button>
-                                        </DialogClose>
-                                    </DialogFooter>
-                                </DialogContent>
-                            </Dialog>
-                            <button className="flex justify-center items-center bg-[#606060] hover:bg-[#404040] rounded-lg p-2"
-                                onClick={() => {
-                                    console.log('User to Edit:', user); // Debugging: Apakah data user benar?
-                                    setEditingUser(user); // Set data user ke state editingUser
-                                }}
-                            >
-                                <Image src="/icons/edit.svg" alt="Logo" width={24} height={24} />
-                            </button>
+                                        </div>
+                                        <div className="flex items-center justify-end gap-2">
+                                            <WhatsappShareButton
+                                                url="https://leaderboard-mobile.vercel.app/"
+                                                title={`Hey! ${user.nama} just scored ${user.skor} on the leaderboard!`}
+                                            >
+                                                <WhatsappIcon size={32} round />
+                                            </WhatsappShareButton>
+                                            <TelegramShareButton
+                                                url="https://leaderboard-mobile.vercel.app/"
+                                                title={`Hey! ${user.nama} just scored ${user.skor} on the leaderboard!`}
+                                            >
+                                                <TelegramIcon size={32} round />
+                                            </TelegramShareButton>
+                                            <FacebookShareButton
+                                                url="https://leaderboard-mobile.vercel.app/"
+                                                hashtag={`Hey! ${user.nama} just scored ${user.skor} on the leaderboard!`}
+                                            >
+                                                <FacebookIcon size={32} round />
+                                            </FacebookShareButton>
+                                            <InstagramShareButton />
+                                        </div>
+                                        <DialogFooter className="sm:justify-start">
+                                            <DialogClose asChild>
+                                                <Button type="button" variant="secondary">
+                                                    Close
+                                                </Button>
+                                            </DialogClose>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
+                                <button className="flex justify-center items-center bg-[#606060] hover:bg-[#404040] rounded-lg p-2"
+                                    onClick={() => {
+                                        console.log('User to Edit:', user); // Debugging: Apakah data user benar?
+                                        setEditingUser(user); // Set data user ke state editingUser
+                                    }}
+                                >
+                                    <Image src="/icons/edit.svg" alt="Logo" width={24} height={24} />
+                                </button>
+                            </div>
                         </div>
                     </div>
                 ))}
@@ -249,19 +257,19 @@ const Leaderboard: React.FC = () => {
                                 <td className="border p-2 flex justify-between">
                                     <div className="flex gap-2">
                                         <WhatsappShareButton
-                                            url="https://example.com"
+                                            url="https://leaderboard-mobile.vercel.app/"
                                             title={`Hey! ${user.nama} just scored ${user.skor} on the leaderboard!`}
                                         >
                                             <WhatsappIcon size={32} round />
                                         </WhatsappShareButton>
                                         <TelegramShareButton
-                                            url="https://example.com"
+                                            url="https://leaderboard-mobile.vercel.app/"
                                             title={`Hey! ${user.nama} just scored ${user.skor} on the leaderboard!`}
                                         >
                                             <TelegramIcon size={32} round />
                                         </TelegramShareButton>
                                         <FacebookShareButton
-                                            url="https://example.com"
+                                            url="https://leaderboard-mobile.vercel.app/"
                                             hashtag={`Hey! ${user.nama} just scored ${user.skor} on the leaderboard!`}
                                         >
                                             <FacebookIcon size={32} round />
