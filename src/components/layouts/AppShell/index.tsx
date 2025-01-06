@@ -6,7 +6,7 @@ type AppShellProps = {
 const AppShell = (props: AppShellProps) => {
     const { children } = props
     return (
-        <main>
+        <main className="bg-radial-primary text-white">
             {children}
         </main>
     )
