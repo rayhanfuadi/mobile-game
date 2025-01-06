@@ -30,9 +30,12 @@ const EditPlayersForm: React.FC<Props> = (props: Props) => {
                     type="number"
                     placeholder="Score"
                     value={valueSkor}
+                    min={0}
+                    max={100}
                     onChange={onChangeSkor}
                     className="border p-2 w-full mb-4"
                 />
+                <p>Photo URL: (silahkan masukan foto dari link address pinterset)</p>
                 <input
                     type="text"
                     placeholder="Photo URL"
