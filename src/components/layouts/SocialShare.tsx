@@ -4,7 +4,8 @@ interface Props {
     skor: number,
 }
 
-const SocialShare: React.FC<Props> = ({ nama, skor }) => {
+const SocialShare: React.FC<Props> = (props: Props) => {
+    const { nama, skor } = props
     const message = `Check out my score on the leaderboard! ${nama} : ${skor}`
     const url = encodeURIComponent(message)
 

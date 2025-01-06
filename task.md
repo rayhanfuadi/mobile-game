@@ -21,4 +21,4 @@ mis. const mockData = [
 3. Untuk skor Submit dan Edit, dapat "console.log" payload dari API submitAPI dan updateAPI, tidak perlu mencapai akhir proses submit dan update
 4. Bukti Tugas yang telah diselesaikan:
 sediakan sebagai Screenshot untuk halaman Leaderboard, dan saat edit sebagai bukti keberhasilan Tugas Pengiriman
-Email ke muhrahk110@gmail.com, lalu cc: johandyyahya737@gmail.com sebelum 06 Januari 2025, 23.59, dengan penjelasan singkat tentang fitur apa yang dibuat. disertakan repo github dan kami berharap dapat segera mendiskusikan tugas Anda dengan Anda.sS
+Email ke muhrahk110@gmail.com, lalu cc: johandyyahya737@gmail.com sebelum 06 Januari 2025, 23.59, dengan penjelasan singkat tentang fitur apa yang dibuat. disertakan repo github dan kami berharap dapat segera mendiskusikan tugas Anda dengan Anda.

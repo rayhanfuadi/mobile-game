@@ -2,14 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'loremflickr.com',
-        port: '',
-        pathname: '/**',
-      },
-    ],
+    domains: ['loremflickr.com', 'i.pinimg.com', 'id.pinterest.com'],
   },
   /* config options here */
   reactStrictMode: true,

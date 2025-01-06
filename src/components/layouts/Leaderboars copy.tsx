@@ -12,27 +12,19 @@ import { FacebookIcon, FacebookShareButton, TelegramIcon, TelegramShareButton, W
 import {
     DropdownMenu,
     DropdownMenuContent,
+    DropdownMenuLabel,
     DropdownMenuRadioGroup,
     DropdownMenuRadioItem,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 
 const Leaderboard: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const users = useSelector((state: RootState) => state.leaderboard.users);
 
     const [search, setSearch] = useState('');
+    const [sortBy, setSortBy] = useState<'skor' | 'nama'>('skor');
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
     const [editingUser, setEditingUser] = useState<{ id: string; nama: string; skor: number; url_foto: string } | null>(null);
 
@@ -49,8 +41,14 @@ const Leaderboard: React.FC = () => {
         .filter((user) =>
             user.nama.toLowerCase().includes(search.toLowerCase())
         )
-        .sort((a, b) => (sortOrder === 'desc' ? b.skor - a.skor : a.skor - b.skor));
-
+        .sort((a, b) => {
+            if (sortBy === 'skor') {
+                return sortOrder === 'desc' ? b.skor - a.skor : a.skor - b.skor;
+            }
+            return sortOrder === 'desc'
+                ? b.nama.localeCompare(a.nama)
+                : a.nama.localeCompare(b.nama);
+        });
 
     // const handleShare = (nama: string, skor: number) => {
     //     const message = `Hey! *${nama}* just scored ${skor} on the leaderboard! Check it out!`;
@@ -73,41 +71,25 @@ const Leaderboard: React.FC = () => {
         }
     };
 
+    const [position, setPosition] = React.useState("bottom")
 
     return (
         <div className="grid gap-6">
             <h1 className="text-2xl font-semibold text-center mt-[68px]">Leaderboards</h1>
-
-            <Dialog>
-                <DialogTrigger asChild>
-                    <Button variant="outline">Edit Profile</Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                        <DialogTitle>Edit profile</DialogTitle>
-                        <DialogDescription>
-                            Make changes to your profile here. Click save when you re done.
-                        </DialogDescription>
-                    </DialogHeader>
-                    <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="name" className="text-right">
-                                Name
-                            </Label>
-                            <Input id="name" value="Pedro Duarte" className="col-span-3" />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="username" className="text-right">
-                                Username
-                            </Label>
-                            <Input id="username" value="@peduarte" className="col-span-3" />
-                        </div>
-                    </div>
-                    <DialogFooter>
-                        <Button type="submit">Save changes</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button className='text-black' variant="outline">Open</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                    <DropdownMenuLabel>Panel Position</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
+                        <DropdownMenuRadioItem value="top">Top</DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem value="bottom">Bottom</DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem value="right">Right</DropdownMenuRadioItem>
+                    </DropdownMenuRadioGroup>
+                </DropdownMenuContent>
+            </DropdownMenu>
 
             <div className="flex justify-between border p-2 rounded-full">
                 <div className="flex items-center gap-2">
@@ -182,6 +164,14 @@ const Leaderboard: React.FC = () => {
                         onChange={(e) => setSearch(e.target.value)}
                     />
                     <div className="flex gap-2">
+                        <select
+                            className="border p-2 rounded text-black"
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value as 'skor' | 'nama')}
+                        >
+                            <option value="score">Sort by Score</option>
+                            <option value="name">Sort by Name</option>
+                        </select>
                         <select
                             className="border p-2 rounded text-black"
                             value={sortOrder}

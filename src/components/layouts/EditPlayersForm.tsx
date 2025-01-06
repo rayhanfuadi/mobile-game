@@ -1,94 +1,108 @@
-import { Player, updatePlayers } from "@/redux/leaderboardSlice";
-import axios from "axios";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
 
 interface Props {
-    player: Player,
-    onClose: () => void,
+    // value: { id: string; nama: string; skor: number; url_foto: string } | null
+    // onChange: (value: { id: string; nama: string; skor: number; url_foto: string } | null) => void
+    // onClick: () => void
+    valueNama: string,
+    onChangeNama: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    valueSkor: number,
+    onChangeSkor: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    valueUrl_foto: string,
+    onChangeUrl_foto: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onClick: () => void
+    setEditingUser: () => void
 }
 
-const EditPlayerForm: React.FC<Props> = ({ player, onClose }) => {
-    const dispatch = useDispatch()
-    const [nama, setNama] = useState(player.nama)
-    const [skor, setSkor] = useState(player.skor)
-    const [foto, setFoto] = useState(player.url_foto)
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-
-        // Data yang akan diperbarui
-        const updatedPlayer = {
-            nama,
-            skor,
-            url_foto: foto,
-        };
-
-        try {
-            //update api
-            const response = await axios.put(`https://677118a42ffbd37a63ce2fcc.mockapi.io/users/${player.id}`, { updatedPlayer })
-
-            // update redux state
-            dispatch(updatePlayers(response.data))
-
-            console.log(`Update Player: ${response.data} ✅`);
-            onClose()
-        } catch (error) {
-            console.error(`Failed to update player: ${error} ❌`);
-        }
-    }
-
+const EditPlayersForm: React.FC<Props> = (props: Props) => {
+    const { valueNama, onChangeNama, valueSkor, onChangeSkor, valueUrl_foto, onChangeUrl_foto, setEditingUser, onClick } = props
     return (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded shadow-lg">
-                <h2 className="text-lg font-bold mb-4">Edit Player</h2>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label className="block text-sm font-medium">Name</label>
-                        <input
-                            type="text"
-                            value={nama}
-                            onChange={(e) => setNama(e.target.value)}
-                            className="border p-2 w-full rounded"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium">Skor</label>
-                        <input
-                            type="number"
-                            value={skor}
-                            onChange={(e) => setSkor(Number(e.target.value))}
-                            className="border p-2 w-full rounded"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium">Avatar URL</label>
-                        <input
-                            type="text"
-                            value={foto}
-                            onChange={(e) => setFoto(e.target.value)}
-                            className="border p-2 w-full rounded"
-                            required
-                        />
-                    </div>
-                    <div className="flex justify-end space-x-4">
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="bg-gray-500 text-white px-4 py-2 rounded"
-                        >
-                            Cancel
-                        </button>
-                        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-                            Save
-                        </button>
-                    </div>
-                </form>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white p-6 rounded shadow-lg w-96">
+                <h2 className="text-xl font-bold mb-4">Edit Player</h2>
+                <input
+                    type="text"
+                    placeholder="Name"
+                    value={valueNama}
+                    onChange={onChangeNama}
+                    className="border p-2 w-full mb-4"
+                />
+                <input
+                    type="number"
+                    placeholder="Score"
+                    value={valueSkor}
+                    min={0}
+                    max={100}
+                    onChange={onChangeSkor}
+                    className="border p-2 w-full mb-4"
+                />
+                <p>Photo URL: (silahkan masukan foto dari link address pinterset)</p>
+                <input
+                    type="text"
+                    placeholder="Photo URL"
+                    value={valueUrl_foto}
+                    onChange={onChangeUrl_foto}
+                    className="border p-2 w-full mb-4"
+                />
+                <div className="flex justify-end">
+                    <button
+                        className="bg-red-500 text-white px-4 py-2 rounded mr-2"
+                        onClick={setEditingUser}
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                        onClick={onClick}
+                    >
+                        Save
+                    </button>
+                </div>
             </div>
         </div>
     )
 }
 
-export default EditPlayerForm
+export default EditPlayersForm
+
+
+
+// < div className = "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center" >
+//     <div className="bg-white p-6 rounded shadow-lg w-96">
+//         <h2 className="text-xl font-bold mb-4">Edit Player</h2>
+//         <input
+//             type="text"
+//             placeholder="Name"
+//             value={editingUser.nama}
+//             onChange={(e) => setEditingUser({ ...editingUser, nama: e.target.value })}
+//             className="border p-2 w-full mb-4"
+//         />
+//         <input
+//             type="number"
+//             placeholder="Score"
+//             value={editingUser.skor}
+//             onChange={(e) => setEditingUser({ ...editingUser, skor: +e.target.value })}
+//             className="border p-2 w-full mb-4"
+//         />
+//         <input
+//             type="text"
+//             placeholder="Photo URL"
+//             value={editingUser.url_foto}
+//             onChange={(e) => setEditingUser({ ...editingUser, url_foto: e.target.value })}
+//             className="border p-2 w-full mb-4"
+//         />
+//         <div className="flex justify-end">
+//             <button
+//                 className="bg-red-500 text-white px-4 py-2 rounded mr-2"
+//                 onClick={() => setEditingUser(null)}
+//             >
+//                 Cancel
+//             </button>
+//             <button
+//                 className="bg-blue-500 text-white px-4 py-2 rounded"
+//                 onClick={handleEdit}
+//             >
+//                 Save
+//             </button>
+//         </div>
+//     </div>
+//     </ >
