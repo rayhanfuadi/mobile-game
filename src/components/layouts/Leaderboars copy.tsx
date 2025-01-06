@@ -4,9 +4,8 @@ import { fetchUsers, updateUser as updateUserAPI } from '@/services/apiServices'
 import { AppDispatch, RootState } from '@/redux/store';
 import { setUsers, updateUser } from '@/redux/leaderboardSlice';
 import Image from 'next/image';
-import EditPlayersForm from './EditPlayersForm';
+import EditPlayerForm from './EditPlayerForm';
 import { FacebookIcon, FacebookShareButton, TelegramIcon, TelegramShareButton, WhatsappIcon, WhatsappShareButton } from 'react-share';
-
 
 const Leaderboard: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -39,11 +38,32 @@ const Leaderboard: React.FC = () => {
                 : a.nama.localeCompare(b.nama);
         });
 
-    // const handleShare = (nama: string, skor: number) => {
-    //     const message = `Hey! *${nama}* just scored ${skor} on the leaderboard! Check it out!`;
-    //     const encodedMessage = encodeURIComponent(message);
-    //     const whatsappURL = `https://wa.me/?text=${encodedMessage}`;
-    //     window.open(whatsappURL, '_blank');
+    // const handleShare = (platform: string, nama: string, skor: number) => {
+    //     const message = `Hey! ${nama} just scored ${skor} on the leaderboard! Check it out!`;
+    //     const leaderboardURL = 'https://your-website.com/leaderboard'; // Tambahkan URL valid ke leaderboard Anda
+    //     const encodedURL = encodeURIComponent(leaderboardURL);
+
+    //     let shareURL = '';
+
+    //     switch (platform) {
+    //         case 'WhatsApp':
+    //             shareURL = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    //             break;
+    //         case 'Telegram':
+    //             shareURL = `https://t.me/share/url?url=${encodedURL}&text=${encodeURIComponent(message)}`;
+    //             break;
+    //         case 'Facebook':
+    //             shareURL = `https://www.facebook.com/sharer/sharer.php?u=${encodedURL}`;
+    //             break;
+    //         case 'Instagram':
+    //             shareURL = `https://www.instagram.com/rayhanfuadi`;
+    //             break;
+    //         default:
+    //             console.error('Unsupported platform:', platform);
+    //             return;
+    //     }
+
+    //     window.open(shareURL, '_blank');
     // };
 
     const handleEdit = async () => {
@@ -152,18 +172,13 @@ const Leaderboard: React.FC = () => {
             </table>
 
             {editingUser && (
-                <EditPlayersForm
-                    valueNama={editingUser.nama}
-                    onChangeNama={(e) => setEditingUser({ ...editingUser, nama: e.target.value })}
-                    valueSkor={editingUser.skor}
-                    onChangeSkor={(e) => setEditingUser({ ...editingUser, skor: +e.target.value })}
-                    valueUrl_foto={editingUser.url_foto}
-                    onChangeUrl_foto={(e) => setEditingUser({ ...editingUser, url_foto: e.target.value })}
-                    onClick={handleEdit}
-                    setEditingUser={() => setEditingUser(null)}
+                <EditPlayerForm
+                    editingUser={editingUser}
+                    onClose={() => setEditingUser(null)}
+                    onSave={handleEdit}
                 />
             )}
-        </div >
+        </div>
     );
 };
 
