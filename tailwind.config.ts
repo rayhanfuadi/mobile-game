@@ -74,7 +74,10 @@ export default {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)'
-      }
+      },
+      dropShadow: {
+        'form': '4px 4px 16px rgba(255, 255, 255, 0.25)',
+      },
     }
   },
   // eslint-disable-next-line @typescript-eslint/no-require-imports
