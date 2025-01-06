@@ -5,8 +5,10 @@ import { Provider } from "react-redux"
 const Home = () => {
   return (
     <Provider store={store}>
-      <div className="h-screen container">
-        <Leaderboard />
+      <div className="grid gap-[60px] container">
+        <div className="min-h-screen">
+          <Leaderboard />
+        </div>
       </div>
     </Provider>
   )
