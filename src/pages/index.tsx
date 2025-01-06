@@ -5,7 +5,7 @@ import { Provider } from "react-redux"
 const Home = () => {
   return (
     <Provider store={store}>
-      <div className="grid gap-[60px] container">
+      <div className="h-screen container">
         <Leaderboard />
       </div>
     </Provider>
